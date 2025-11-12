@@ -20,28 +20,51 @@ A complete web-based implementation of the **biosim4** biological evolution simu
 
 ### Running Locally
 
+> **⚠️ IMPORTANT**: You **cannot** open `index.html` directly (double-click) due to CORS restrictions with ES6 modules. You **must** run a local web server.
+
+**Method 1: Using npm (Recommended)**
+
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/alexandriashai/life.git
    cd life
    ```
 
-2. **Serve the files** (required for ES6 modules):
+2. **Start the development server**:
+   ```bash
+   npm start
+   # or
+   npm run dev
+   ```
+   This will automatically open `http://localhost:8000` in your browser.
+
+**Method 2: Using VS Code Live Server**
+
+1. Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.liveserver)
+2. Open the project folder in VS Code
+3. Right-click `index.html` and select "Open with Live Server"
+
+**Method 3: Using Python/PHP**
+
    ```bash
    # Using Python 3
    python3 -m http.server 8000
 
-   # Or using Node.js
-   npx http-server -p 8000
-
    # Or using PHP
    php -S localhost:8000
    ```
+   Then navigate to `http://localhost:8000`
 
-3. **Open in browser**:
-   Navigate to `http://localhost:8000` in your web browser.
+**Method 4: Browser Extensions**
 
-4. **Start evolving**:
+Install a local server extension for your browser:
+- Chrome: [Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
+- Firefox: Use the built-in developer tools
+
+### Starting the Simulation
+
+1. **Open in browser**: Navigate to `http://localhost:8000`
+2. **Start evolving**:
    - Click the **Play** button to start the simulation
    - Watch creatures evolve over generations
    - Click on creatures to inspect their genomes
@@ -246,11 +269,21 @@ This is a web implementation of **biosim4** by David R. Miller:
 
 ## 🐛 Troubleshooting
 
+### CORS Error: "Access to script... has been blocked by CORS policy"
+
+This error occurs when you try to open `index.html` directly by double-clicking it.
+
+**Solution**: You must run a local web server (see Quick Start above). The easiest way:
+```bash
+npm start
+```
+
 ### Simulation won't start
 
 - Make sure you're serving files over HTTP (not `file://`)
 - Check browser console for errors
 - Try using a modern browser (Chrome, Firefox, Edge, Safari)
+- Verify the console shows "🧬 BioSim4 Web initialized!"
 
 ### Poor performance
 

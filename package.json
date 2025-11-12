@@ -1,0 +1,23 @@
+{
+  "name": "biosim4-web",
+  "version": "1.0.0",
+  "description": "A complete web-based implementation of the biosim4 biological evolution simulator",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000 -c-1 -o",
+    "dev": "npx http-server -p 8000 -c-1 -o"
+  },
+  "keywords": [
+    "evolution",
+    "simulation",
+    "neural-network",
+    "artificial-life",
+    "biosim4"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexandriashai/life.git"
+  }
+}
