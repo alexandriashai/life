@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSim4 Web - Evolution Simulator</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/controls.css">
+    <link rel="stylesheet" href="styles/stats.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>🧬 BioSim4 Web - Evolution Simulator</h1>
+            <p class="subtitle">Watch creatures evolve through natural selection</p>
+        </header>
+
+        <div id="main-container">
+            <!-- Left Panel: Canvas -->
+            <div id="canvas-container">
+                <canvas id="simulationCanvas" width="800" height="800"></canvas>
+                <div id="canvas-overlay">
+                    <div id="generation-counter">Generation: 0 | Step: 0</div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Controls and Stats -->
+            <div id="sidebar">
+                <!-- Control Panel -->
+                <div class="panel" id="control-panel">
+                    <h2>Controls</h2>
+                    <div class="control-group">
+                        <button id="btnPlayPause" class="btn btn-primary">▶ Play</button>
+                        <button id="btnStep" class="btn">Step</button>
+                        <button id="btnReset" class="btn">Reset</button>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="speedSlider">Speed: <span id="speedValue">1.0</span>x</label>
+                        <input type="range" id="speedSlider" min="0.1" max="5" step="0.1" value="1.0">
+                    </div>
+
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="showPheromones" checked>
+                            Show Pheromones
+                        </label>
+                        <label>
+                            <input type="checkbox" id="showGrid">
+                            Show Grid
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Statistics Panel -->
+                <div class="panel" id="stats-panel">
+                    <h2>Statistics</h2>
+                    <div class="stat-row">
+                        <span class="stat-label">Population:</span>
+                        <span class="stat-value" id="statPopulation">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Survivors:</span>
+                        <span class="stat-value" id="statSurvivors">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Generation:</span>
+                        <span class="stat-value" id="statGeneration">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Avg Genome Length:</span>
+                        <span class="stat-value" id="statGenomeLength">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">FPS:</span>
+                        <span class="stat-value" id="statFPS">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">UPS:</span>
+                        <span class="stat-value" id="statUPS">0</span>
+                    </div>
+                </div>
+
+                <!-- Configuration Panel -->
+                <div class="panel" id="config-panel">
+                    <h2>Configuration</h2>
+
+                    <div class="config-section">
+                        <h3>World</h3>
+                        <div class="config-row">
+                            <label for="cfgWorldSize">Grid Size:</label>
+                            <input type="number" id="cfgWorldSize" value="128" min="32" max="256">
+                        </div>
+                        <div class="config-row">
+                            <label for="cfgPopulation">Population:</label>
+                            <input type="number" id="cfgPopulation" value="300" min="50" max="1000">
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Generation</h3>
+                        <div class="config-row">
+                            <label for="cfgStepsPerGen">Steps/Gen:</label>
+                            <input type="number" id="cfgStepsPerGen" value="300" min="100" max="1000">
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Genome</h3>
+                        <div class="config-row">
+                            <label for="cfgGeneCount">Initial Genes:</label>
+                            <input type="number" id="cfgGeneCount" value="24" min="4" max="100">
+                        </div>
+                        <div class="config-row">
+                            <label for="cfgMutationRate">Mutation Rate:</label>
+                            <input type="number" id="cfgMutationRate" value="0.001" min="0" max="0.1" step="0.001">
+                        </div>
+                        <div class="config-row">
+                            <label for="cfgMaxNeurons">Max Neurons:</label>
+                            <input type="number" id="cfgMaxNeurons" value="5" min="1" max="20">
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Selection Challenge</h3>
+                        <div class="config-row">
+                            <label for="cfgChallenge">Challenge:</label>
+                            <select id="cfgChallenge">
+                                <option value="0">Circle</option>
+                                <option value="1">Right Half</option>
+                                <option value="2">Right Quarter</option>
+                                <option value="3">Left Eighth</option>
+                                <option value="4">String (Social)</option>
+                                <option value="5">Center Weighted</option>
+                                <option value="6" selected>Center Unweighted</option>
+                                <option value="7">Center Sparse</option>
+                                <option value="8">Corner</option>
+                                <option value="9">Corner Weighted</option>
+                                <option value="11">Against Any Wall</option>
+                                <option value="13">Migrate Distance</option>
+                                <option value="14">East-West Eighths</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Barriers</h3>
+                        <div class="config-row">
+                            <label for="cfgBarrier">Barrier Type:</label>
+                            <select id="cfgBarrier">
+                                <option value="0" selected>None</option>
+                                <option value="1">Vertical Bar</option>
+                                <option value="2">Random Vertical</option>
+                                <option value="3">Five Blocks</option>
+                                <option value="4">Horizontal Bar</option>
+                                <option value="5">Circular Island</option>
+                                <option value="6">Five Spots</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button id="btnApplyConfig" class="btn btn-primary">Apply Configuration</button>
+                </div>
+
+                <!-- Selected Creature Info -->
+                <div class="panel" id="creature-panel" style="display: none;">
+                    <h2>Selected Creature</h2>
+                    <div id="creature-info"></div>
+                    <canvas id="genomeCanvas" width="300" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Based on <a href="https://github.com/davidrmiller/biosim4" target="_blank">biosim4</a> by David R. Miller |
+            Web Version | Click on creatures to inspect them</p>
+        </footer>
+    </div>
+
+    <!-- Load modules -->
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
